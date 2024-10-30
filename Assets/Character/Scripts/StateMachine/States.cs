@@ -109,6 +109,13 @@ public class JumpingState : PlayerState
 
     public override void Update()
     {
+        float direction = characterBehaviour.GetMovementDirection();
+
+        // Aplica o Flip com base na direção de movimento
+        if (direction != 0)
+        {
+            characterBehaviour.Flip(direction);
+        }
         if (characterBehaviour.IsGrounded())
         {
             characterBehaviour.ChangeState(new IdleState(characterBehaviour));

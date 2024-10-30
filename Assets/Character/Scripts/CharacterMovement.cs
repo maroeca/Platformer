@@ -74,6 +74,9 @@ public class CharacterMovement : MonoBehaviour
 
     public void IncreaseAccel()
     {
+        //Bloqueia a função de correr se estiver fora do chão
+        if (!isGrounded) return;
+        
         if (acceleration < maxAcceleration)
         {
             Acceleration += 0.02f;
@@ -82,6 +85,9 @@ public class CharacterMovement : MonoBehaviour
 
     public void DecreaseAccel()
     {
+        //Mantém o impulso da corrida durante o pulo
+        if (!isGrounded) return;
+
         if (acceleration > 1f)
         {
             Acceleration -= 0.02f;

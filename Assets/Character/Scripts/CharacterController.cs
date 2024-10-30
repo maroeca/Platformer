@@ -60,7 +60,7 @@ public class CharacterController : MonoBehaviour
         isHoldingAction = false;
     }
 
-    public void Run()
+    public void Accelerate()
     {
         characterMovement.IncreaseAccel();
     }
@@ -82,7 +82,7 @@ public class CharacterController : MonoBehaviour
         if (isHoldingAction)
         {
             Debug.Log("Holding");
-            Run();
+            Accelerate();
         }
         else
         {
