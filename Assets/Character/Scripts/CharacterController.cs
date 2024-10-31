@@ -6,9 +6,9 @@ public class CharacterController : MonoBehaviour
     public CharacterMovement characterMovement;
     public CharacterBehaviour characterBehaviour;
     private CharacterInput inputActions;
-    private Vector2 moveInput;
-    private bool jumpInput;
-    private bool isHoldingAction = false;
+    private Vector2 moveInput; //Recebe os valores do movimento horizontal
+    private bool jumpInput; //Recebe o input do pulo em forma de botão
+    private bool isHoldingAction = false; // Controla se o botão de corrida está pressionado
 
     private void Awake()
     {
@@ -35,31 +35,6 @@ public class CharacterController : MonoBehaviour
         inputActions.Gameplay.Disable();
     }
 
-    public void OnHoldingAction(InputAction.CallbackContext context)
-    {
-        Debug.Log("Chamou");
-        if (context.phase == InputActionPhase.Performed)
-        {
-            isHoldingAction = true; // Inicia o hold quando o botão é pressionado
-        }
-        else if (context.phase == InputActionPhase.Canceled)
-        {
-            isHoldingAction = false; // Cancela o hold quando o botão é solto
-        }
-    }
-
-    public void RunPerformed()
-    {
-        Debug.Log("Performing");
-        isHoldingAction = true;
-    }
-
-    public void RunCanceled()
-    {
-        Debug.Log("Canceling");
-        isHoldingAction = false;
-    }
-
     public void Accelerate()
     {
         characterMovement.IncreaseAccel();
@@ -79,6 +54,8 @@ public class CharacterController : MonoBehaviour
             characterBehaviour.ApplyJump();
         }
 
+        //Acelera o personagem enquanto o botão de corrida está acionado
+        //e desacelera quando o botão é solto
         if (isHoldingAction)
         {
             Debug.Log("Holding");
@@ -88,11 +65,5 @@ public class CharacterController : MonoBehaviour
         {
             Deaccelerate();
         }
-    }
-
-    private void Running()
-    {
-        Debug.Log("RUNNING");
-        characterMovement.Run(moveInput.x);
     }
 }

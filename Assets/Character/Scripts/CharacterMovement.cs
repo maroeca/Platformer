@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Controla o movimento do personagem
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class CharacterMovement : MonoBehaviour
 {
@@ -65,12 +68,6 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
-    public void Run(float direction)
-    {
-        Direction = direction;
-
-        transform.position += new Vector3(Direction * moveSpeed * Acceleration * Time.deltaTime, 0);        
-    }
 
     public void IncreaseAccel()
     {
