@@ -87,7 +87,14 @@ public class RunningState : PlayerState
 
         if (!characterBehaviour.IsGrounded())
         {
-            characterBehaviour.ChangeState(new JumpingState(characterBehaviour));
+            if (characterBehaviour.GetVerticalVelocity() > 0 )
+            {
+                characterBehaviour.ChangeState(new JumpingState(characterBehaviour));
+            }
+            else
+            {
+                characterBehaviour.ChangeState(new FallingState(characterBehaviour));
+            }            
         }
 
         if (!characterBehaviour.IsRunning() && characterBehaviour.IsMoving())
@@ -116,9 +123,35 @@ public class JumpingState : PlayerState
         {
             characterBehaviour.Flip(direction);
         }
+        if (characterBehaviour.GetVerticalVelocity() < 0)
+        {
+            characterBehaviour.ChangeState(new FallingState(characterBehaviour));
+        }
+    }
+}
+
+public class FallingState : PlayerState
+{
+    public FallingState(CharacterBehaviour characterBehaviour) : base(characterBehaviour) { }
+
+    public override void Enter()
+    {
+        characterBehaviour.PlayAnimation("Character_Fall");
+    }
+
+    public override void Update()
+    {
+        float direction = characterBehaviour.GetMovementDirection();
+
+        // Aplica o Flip com base na direção de movimento
+        if (direction != 0)
+        {
+            characterBehaviour.Flip(direction);
+        }
+        // Transição para Idle ou Running se o personagem estiver no chão
         if (characterBehaviour.IsGrounded())
         {
-            characterBehaviour.ChangeState(new IdleState(characterBehaviour));
+            characterBehaviour.ChangeState(new IdleState(characterBehaviour)); // Ou RunningState, dependendo do contexto
         }
     }
 }

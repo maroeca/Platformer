@@ -45,7 +45,8 @@ public class CharacterController : MonoBehaviour
         characterMovement.DecreaseAccel();
     }
 
-    private void Update()
+    //Mudança para fixedUpdate para evitar que o personagem flicasse
+    private void FixedUpdate()
     {
         characterMovement.Move(moveInput.x);
 

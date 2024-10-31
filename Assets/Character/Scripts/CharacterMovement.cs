@@ -11,7 +11,7 @@ public class CharacterMovement : MonoBehaviour
 
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
-    [SerializeField] private float groundCheckDistance = 0.1f; // Distância do raycast para verificar o chão
+    [SerializeField] private float groundCheckDistance = 0.7f; // Distância do raycast para verificar o chão
     [SerializeField] private LayerMask groundLayer; // Camada que representa o chão
 
 
@@ -70,14 +70,17 @@ public class CharacterMovement : MonoBehaviour
         Vector2 direction = Vector2.down;
 
         isGrounded = Physics2D.Raycast(origin, direction, groundCheckDistance, groundLayer);
+
+        // Desenha a linha do raycast na Scene View para depuração
+        Color lineColor = isGrounded ? Color.green : Color.red; // Verde se estiver no chão, vermelho se não estiver
+        Debug.DrawLine(origin, origin + Vector2.down * groundCheckDistance, lineColor);
     }
 
     public void Move(float direction)
     {
         Direction = direction;
         var finalMoveSpeed = moveSpeed * Acceleration;
-        transform.position += new Vector3(Direction * finalMoveSpeed * Time.deltaTime, 0);
-        
+        transform.position += new Vector3(Direction * finalMoveSpeed * Time.deltaTime, 0);        
     }
 
 
@@ -99,7 +102,7 @@ public class CharacterMovement : MonoBehaviour
 
         if (acceleration > 1f)
         {
-            Acceleration -= 0.02f;
+            Acceleration -= 0.01f;
         }
         else
         {

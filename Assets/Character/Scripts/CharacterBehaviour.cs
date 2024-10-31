@@ -8,12 +8,15 @@ public class CharacterBehaviour : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
+    private Rigidbody2D rb;
+
     private void Awake()
     {
         characterMovement = GetComponent<CharacterMovement>();
         animator = GetComponent<Animator>();
         stateMachine = new PlayerStateMachine();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
 
         // Define o estado inicial como Idle
         stateMachine.ChangeState(new IdleState(this));
@@ -62,5 +65,10 @@ public class CharacterBehaviour : MonoBehaviour
     public float GetMovementDirection()
     {
         return characterMovement.GetDirection();
+    }
+
+    public float GetVerticalVelocity()
+    {
+        return rb.velocity.y;
     }
 }
