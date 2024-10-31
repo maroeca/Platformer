@@ -41,7 +41,7 @@ public class CharacterBehaviour : MonoBehaviour
 
     public bool IsRunning()
     {
-        return characterMovement.IsRunning;
+        return characterMovement.GetAcceleration() > 1.02f;
     }
 
     public void Flip(float direction)

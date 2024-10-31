@@ -11,25 +11,20 @@ public class CharacterMovement : MonoBehaviour
 
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
-    private bool isRunning;
+    [SerializeField] private float groundCheckDistance = 0.1f; // Distância do raycast para verificar o chão
+    [SerializeField] private LayerMask groundLayer; // Camada que representa o chão
 
-    public bool IsRunning
-    {
-        get { return isRunning; }
-        set { isRunning = value; }
-    }
 
     [SerializeField]private float acceleration = 1f;
     public float Acceleration
     {
-        set { 
-            
+        set {            
             acceleration = value;
-            animator.SetFloat("Speed", acceleration);
-            IsRunning = acceleration > 1.02f;
+            animator.SetFloat("Speed", acceleration); //seta o parametro Speed de acordo com a aceleração para aumentar a velocidade da animação de corrida
         }
         get { return acceleration; }
     }
+
     [SerializeField] private float maxAcceleration = 5f;
     private bool isGrounded = true;
     public bool IsGrounded
@@ -61,6 +56,20 @@ public class CharacterMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         
+    }
+
+    private void Update()
+    {
+        CheckGrounded();
+    }
+
+    private void CheckGrounded()
+    {
+        // Realiza o raycast abaixo do personagem para verificar o chão
+        Vector2 origin = transform.position;
+        Vector2 direction = Vector2.down;
+
+        isGrounded = Physics2D.Raycast(origin, direction, groundCheckDistance, groundLayer);
     }
 
     public void Move(float direction)
@@ -118,5 +127,10 @@ public class CharacterMovement : MonoBehaviour
     public float GetDirection()
     {
         return Direction;
+    }
+
+    public float GetAcceleration()
+    {
+        return Acceleration;
     }
 }
