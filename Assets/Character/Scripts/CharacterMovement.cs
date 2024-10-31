@@ -7,7 +7,8 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
-    
+    private Animator animator;
+
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
     private bool isRunning;
@@ -24,6 +25,7 @@ public class CharacterMovement : MonoBehaviour
         set { 
             
             acceleration = value;
+            animator.SetFloat("Speed", acceleration);
             IsRunning = acceleration > 1.02f;
         }
         get { return acceleration; }
@@ -57,6 +59,7 @@ public class CharacterMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         
     }
 
