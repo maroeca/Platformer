@@ -112,20 +112,15 @@ public class CharacterMovement : MonoBehaviour
 
     public void ApplyJump()
     {
+        
         if (isGrounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             isGrounded = false;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
-    }
+    
 
     public float GetDirection()
     {
