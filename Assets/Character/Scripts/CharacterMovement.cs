@@ -12,7 +12,7 @@ public class CharacterMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
     [SerializeField] private float groundCheckDistance = 0.7f; // Distância do raycast para verificar o chão
-    [SerializeField] private LayerMask groundLayer; // Camada que representa o chão
+    [SerializeField] private LayerMask groundLayer; // Camada que representa o chão e o de morte
 
 
     [SerializeField]private float acceleration = 1f;
@@ -61,6 +61,7 @@ public class CharacterMovement : MonoBehaviour
     private void Update()
     {
         CheckGrounded();
+        
     }
 
     private void CheckGrounded()
