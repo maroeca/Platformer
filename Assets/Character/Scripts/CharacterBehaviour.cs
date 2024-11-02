@@ -54,7 +54,7 @@ public class CharacterBehaviour : MonoBehaviour
 
     public void ApplyJump()
     {
-        characterMovement.ApplyJump();
+        //characterMovement.ApplyJump();
     }
 
     public bool IsGrounded()
@@ -70,5 +70,15 @@ public class CharacterBehaviour : MonoBehaviour
     public float GetVerticalVelocity()
     {
         return rb.velocity.y;
+    }
+
+    public void StartJump()
+    {        
+      characterMovement.BeginJump();       
+    }
+
+    public void EndJump()
+    {
+        characterMovement.StopJump();
     }
 }

@@ -149,9 +149,14 @@ public class FallingState : PlayerState
             characterBehaviour.Flip(direction);
         }
         // Transição para Idle ou Running se o personagem estiver no chão
-        if (characterBehaviour.IsGrounded())
+        if (characterBehaviour.IsGrounded() && characterBehaviour.GetVerticalVelocity() < 0)
         {
-            characterBehaviour.ChangeState(new IdleState(characterBehaviour)); // Ou RunningState, dependendo do contexto
+            characterBehaviour.ChangeState(new IdleState(characterBehaviour));
+        }
+
+        if (!characterBehaviour.IsGrounded() && characterBehaviour.GetVerticalVelocity() > 0)
+        {
+            characterBehaviour.ChangeState(new JumpingState(characterBehaviour)); //altera para pulo caso utilize o coyote time
         }
     }
 }

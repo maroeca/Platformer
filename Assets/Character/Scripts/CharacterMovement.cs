@@ -10,7 +10,21 @@ public class CharacterMovement : MonoBehaviour
     private Animator animator;
 
     public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+
+    [Header("Jump Settings")]
+    public float initialJumpForce = 5f;
+    public float maxJumpForce = 10f;
+    public float maxHoldTime = 0.5f;
+
+    private float jumpHoldTime;
+    private bool isJumping;
+
+    [Header("Coyote Time Settings")]
+    [SerializeField] private float coyoteTimeDuration = 0.5f; // Duração do coyote time
+    private float coyoteTimeCounter; // Temporizador de coyote time
+
+
+
     [SerializeField] private float groundCheckDistance = 0.7f; // Distância do raycast para verificar o chão
     [SerializeField] private LayerMask groundLayer; // Camada que representa o chão e o de morte
 
@@ -30,6 +44,14 @@ public class CharacterMovement : MonoBehaviour
     public bool IsGrounded
     {
         get { return isGrounded; }
+        private set
+        {
+            isGrounded = value;
+            if (!isGrounded)
+            {
+                coyoteTimeCounter = coyoteTimeDuration; //inicia o coyote timer quando sair do chão
+            }
+        }
     }
 
     private float direction;
@@ -58,24 +80,76 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
+    public void BeginJump()
+    {
+        Debug.Log(coyoteTimeCounter);
+        if (isGrounded || coyoteTimeCounter > 0)
+        {
+            isJumping = true;
+            jumpHoldTime = 0f;
+            rb.velocity = new Vector2(rb.velocity.x, initialJumpForce);
+
+            // Reseta o coyote time após pular
+            coyoteTimeCounter = 0f;
+        }
+    }
+
+    public void StopJump()
+    {
+        isJumping = false;
+    }
+
     private void Update()
     {
         CheckGrounded();
-        
+
+        if (!isGrounded)
+        {
+            // Reduz o contador de coyote time
+            if (coyoteTimeCounter > 0)
+            {
+                coyoteTimeCounter -= Time.deltaTime;
+                //Debug.Log(coyoteTimeCounter);
+            }
+        }
+
+        if (isJumping && jumpHoldTime < maxHoldTime)
+        {
+            jumpHoldTime += Time.deltaTime;
+            float currentJumpForce = Mathf.Lerp(initialJumpForce, maxJumpForce, jumpHoldTime / maxHoldTime);
+            rb.velocity = new Vector2(rb.velocity.x, currentJumpForce);
+        }
     }
+
 
     private void CheckGrounded()
     {
-        // Realiza o raycast abaixo do personagem para verificar o chão
-        Vector2 origin = transform.position;
+        // Define a origem do raycast ligeiramente abaixo do centro do personagem
+        Vector2 origin = new Vector2(transform.position.x, transform.position.y - 0.1f); // Ajuste conforme necessário
         Vector2 direction = Vector2.down;
 
+        // Realiza o raycast abaixo do personagem para verificar o chão
         isGrounded = Physics2D.Raycast(origin, direction, groundCheckDistance, groundLayer);
 
         // Desenha a linha do raycast na Scene View para depuração
         Color lineColor = isGrounded ? Color.green : Color.red; // Verde se estiver no chão, vermelho se não estiver
-        Debug.DrawLine(origin, origin + Vector2.down * groundCheckDistance, lineColor);
+        Debug.DrawLine(origin, origin + direction * groundCheckDistance, lineColor);
+
+        // (Opcional) Adiciona offsets laterais para bordas
+        Vector2 leftOrigin = origin + Vector2.left * 0.1f;
+        Vector2 rightOrigin = origin + Vector2.right * 0.1f;
+
+        bool isGroundedLeft = Physics2D.Raycast(leftOrigin, direction, groundCheckDistance, groundLayer);
+        bool isGroundedRight = Physics2D.Raycast(rightOrigin, direction, groundCheckDistance, groundLayer);
+
+        // Considera o personagem no chão se qualquer um dos raycasts detectar o chão
+        IsGrounded = isGrounded || isGroundedLeft || isGroundedRight;
+
+        // Desenha os raycasts laterais para depuração
+        Debug.DrawLine(leftOrigin, leftOrigin + direction * groundCheckDistance, lineColor);
+        Debug.DrawLine(rightOrigin, rightOrigin + direction * groundCheckDistance, lineColor);
     }
+
 
     public void Move(float direction)
     {
@@ -110,17 +184,6 @@ public class CharacterMovement : MonoBehaviour
             Acceleration = 1f;
         }
     }
-
-    public void ApplyJump()
-    {
-        
-        if (isGrounded)
-        {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            isGrounded = false;
-        }
-    }
-
     
 
     public float GetDirection()

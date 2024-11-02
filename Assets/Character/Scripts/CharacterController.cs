@@ -8,7 +8,7 @@ public class CharacterController : MonoBehaviour
     private CharacterInput inputActions;
     private Vector2 moveInput; //Recebe os valores do movimento horizontal
     private bool jumpInput; //Recebe o input do pulo em forma de botão
-    private bool isHoldingAction = false; // Controla se o botão de corrida está pressionado
+    private bool isHoldingRun = false; // Controla se o botão de corrida está pressionado
 
     private void Awake()
     {
@@ -17,12 +17,12 @@ public class CharacterController : MonoBehaviour
         inputActions.Gameplay.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Gameplay.Move.canceled += ctx => moveInput = Vector2.zero;
 
-        inputActions.Gameplay.Jump.performed += ctx => jumpInput = ctx.ReadValueAsButton();
-        inputActions.Gameplay.Jump.canceled += ctx => jumpInput = false;
+        inputActions.Gameplay.Jump.started += ctx => StartJump();
+        inputActions.Gameplay.Jump.canceled += ctx => EndJump();
 
 
-        inputActions.Gameplay.Run.performed += ctx => isHoldingAction = ctx.ReadValueAsButton() ;
-        inputActions.Gameplay.Run.canceled += ctx => isHoldingAction = false;
+        inputActions.Gameplay.Run.performed += ctx => isHoldingRun = ctx.ReadValueAsButton() ;
+        inputActions.Gameplay.Run.canceled += ctx => isHoldingRun = false;
     }
 
     private void OnEnable()
@@ -45,19 +45,28 @@ public class CharacterController : MonoBehaviour
         characterMovement.DecreaseAccel();
     }
 
+    private void StartJump()
+    {
+        jumpInput = true;
+        characterBehaviour.StartJump();
+    }
+
+    private void EndJump()
+    {
+        jumpInput = false;
+        characterBehaviour.EndJump();
+    }
+
     //Mudança para fixedUpdate para evitar que o personagem flicasse
     private void FixedUpdate()
     {
         characterMovement.Move(moveInput.x);
 
-        if (jumpInput)
-        {
-            characterBehaviour.ApplyJump();
-        }
+        
 
         //Acelera o personagem enquanto o botão de corrida está acionado
         //e desacelera quando o botão é solto
-        if (isHoldingAction)
+        if (isHoldingRun)
         {
             Debug.Log("Holding");
             Accelerate();

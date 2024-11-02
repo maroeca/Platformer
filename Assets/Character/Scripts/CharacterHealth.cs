@@ -40,7 +40,7 @@ public class CharacterHealth : MonoBehaviour
 
     private void HandleDeath()
     {
-        deaths++;
+        GameManager.Instance.IncreaseDeath();
         currentLives--;
 
         if (currentLives > 0)
@@ -59,5 +59,10 @@ public class CharacterHealth : MonoBehaviour
     {
         // Coloque o personagem de volta na posição inicial ou no último checkpoint
         transform.position = respawnPosition.position;
+    }
+
+    public void SetLives(int amount)
+    {
+        currentLives = amount;
     }
 }
