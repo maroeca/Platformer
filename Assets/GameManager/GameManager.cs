@@ -33,4 +33,9 @@ public class GameManager : MonoBehaviour
         deaths++;
     }
 
+    public void FinishGame()
+    {
+        Debug.Log("Você terminou a fase!");
+    }
+
 }

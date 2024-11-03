@@ -18,9 +18,9 @@ public class RespawnController : MonoBehaviour
     }
 
     public Transform respawnPosition; // A posição atual de respawn
-    public List<RespawnBehaviour> respawnPoints; // Lista de pontos de respawn
+    public List<CheckpointBehaviour> respawnPoints; // Lista de pontos de respawn
 
-    public void SetRespawn(RespawnBehaviour reachedPoint)
+    public void SetRespawn(CheckpointBehaviour reachedPoint)
     {
         // Atualiza a posição de respawn
         respawnPosition.position = reachedPoint.transform.position;

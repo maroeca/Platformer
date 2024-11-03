@@ -1,15 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
-public class RespawnBehaviour : MonoBehaviour
-{    
-
+public class FinishGame : MonoBehaviour
+{
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             // Notifica o controlador para atualizar o ponto de respawn
-            RespawnController.Instance.SetRespawn(this);
+            GameManager.Instance.FinishGame();
         }
     }
 }

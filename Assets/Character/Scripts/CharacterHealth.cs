@@ -11,10 +11,14 @@ public class CharacterHealth : MonoBehaviour
 
     [SerializeField] private Transform respawnPosition;
 
+    private Rigidbody2D rb;
+
     private void Awake()
     {
         currentLives = maxLives;
         deaths = 0;
+
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -57,6 +61,8 @@ public class CharacterHealth : MonoBehaviour
 
     private void Respawn()
     {
+        rb.velocity = new Vector2(0, 0); // zera a velocidade do player ao morrer
+
         // Coloque o personagem de volta na posição inicial ou no último checkpoint
         transform.position = respawnPosition.position;
     }

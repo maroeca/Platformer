@@ -18,6 +18,11 @@ public class CharacterMovement : MonoBehaviour
 
     private float jumpHoldTime;
     private bool isJumping;
+    [SerializeField]private bool canJump = true;
+    public bool CanJump
+    {
+        get { return canJump; }
+    }
 
     [Header("Coyote Time Settings")]
     [SerializeField] private float coyoteTimeDuration = 0.5f; // Duração do coyote time
@@ -29,10 +34,11 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer; // Camada que representa o chão e o de morte
 
 
-    [SerializeField]private float acceleration = 1f;
+    [SerializeField] private float acceleration = 1f;
     public float Acceleration
     {
-        set {            
+        set
+        {
             acceleration = value;
             animator.SetFloat("Speed", acceleration); //seta o parametro Speed de acordo com a aceleração para aumentar a velocidade da animação de corrida
         }
@@ -40,7 +46,9 @@ public class CharacterMovement : MonoBehaviour
     }
 
     [SerializeField] private float maxAcceleration = 5f;
-    private bool isGrounded = true;
+    private bool wasGrounded; // Adiciona uma variável para rastrear o estado anterior
+
+    [SerializeField]private bool isGrounded = true;
     public bool IsGrounded
     {
         get { return isGrounded; }
@@ -51,6 +59,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 coyoteTimeCounter = coyoteTimeDuration; //inicia o coyote timer quando sair do chão
             }
+            
         }
     }
 
@@ -58,8 +67,8 @@ public class CharacterMovement : MonoBehaviour
     public float Direction
     {
         get { return direction; }
-        set 
-        { 
+        set
+        {
             direction = value;
             IsMoving = direction != 0;
         }
@@ -77,12 +86,11 @@ public class CharacterMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        
+
     }
 
     public void BeginJump()
     {
-        Debug.Log(coyoteTimeCounter);
         if (isGrounded || coyoteTimeCounter > 0)
         {
             isJumping = true;
@@ -99,18 +107,12 @@ public class CharacterMovement : MonoBehaviour
         isJumping = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        CheckGrounded();
 
-        if (!isGrounded)
+        if (!isGrounded && coyoteTimeCounter > 0)
         {
-            // Reduz o contador de coyote time
-            if (coyoteTimeCounter > 0)
-            {
-                coyoteTimeCounter -= Time.deltaTime;
-                //Debug.Log(coyoteTimeCounter);
-            }
+            coyoteTimeCounter -= Time.deltaTime;
         }
 
         if (isJumping && jumpHoldTime < maxHoldTime)
@@ -122,10 +124,11 @@ public class CharacterMovement : MonoBehaviour
     }
 
 
+    //Substituido por onCollision por problemas com o pulo
     private void CheckGrounded()
     {
         // Define a origem do raycast ligeiramente abaixo do centro do personagem
-        Vector2 origin = new Vector2(transform.position.x, transform.position.y - 0.1f); // Ajuste conforme necessário
+        Vector2 origin = new Vector2(transform.position.x, transform.position.y - 0.1f);
         Vector2 direction = Vector2.down;
 
         // Realiza o raycast abaixo do personagem para verificar o chão
@@ -135,9 +138,8 @@ public class CharacterMovement : MonoBehaviour
         Color lineColor = isGrounded ? Color.green : Color.red; // Verde se estiver no chão, vermelho se não estiver
         Debug.DrawLine(origin, origin + direction * groundCheckDistance, lineColor);
 
-        // (Opcional) Adiciona offsets laterais para bordas
-        Vector2 leftOrigin = origin + Vector2.left * 0.1f;
-        Vector2 rightOrigin = origin + Vector2.right * 0.1f;
+        Vector2 leftOrigin = origin + Vector2.left * 0.2f;
+        Vector2 rightOrigin = origin + Vector2.right * 0.2f;
 
         bool isGroundedLeft = Physics2D.Raycast(leftOrigin, direction, groundCheckDistance, groundLayer);
         bool isGroundedRight = Physics2D.Raycast(rightOrigin, direction, groundCheckDistance, groundLayer);
@@ -150,12 +152,30 @@ public class CharacterMovement : MonoBehaviour
         Debug.DrawLine(rightOrigin, rightOrigin + direction * groundCheckDistance, lineColor);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+            isJumping = false;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+            coyoteTimeCounter = coyoteTimeDuration;
+        }
+    }
+
 
     public void Move(float direction)
     {
         Direction = direction;
         var finalMoveSpeed = moveSpeed * Acceleration;
-        transform.position += new Vector3(Direction * finalMoveSpeed * Time.deltaTime, 0);        
+        transform.position += new Vector3(Direction * finalMoveSpeed * Time.deltaTime, 0);
     }
 
 
@@ -163,7 +183,7 @@ public class CharacterMovement : MonoBehaviour
     {
         //Bloqueia a função de correr se estiver fora do chão
         if (!isGrounded) return;
-        
+
         if (acceleration < maxAcceleration)
         {
             Acceleration += 0.02f;
@@ -184,7 +204,7 @@ public class CharacterMovement : MonoBehaviour
             Acceleration = 1f;
         }
     }
-    
+
 
     public float GetDirection()
     {

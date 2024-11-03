@@ -73,8 +73,10 @@ public class CharacterBehaviour : MonoBehaviour
     }
 
     public void StartJump()
-    {        
-      characterMovement.BeginJump();       
+    {
+        
+            characterMovement.BeginJump();
+        
     }
 
     public void EndJump()
