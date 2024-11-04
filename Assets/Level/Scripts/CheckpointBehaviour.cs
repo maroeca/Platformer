@@ -10,6 +10,7 @@ public class CheckpointBehaviour : MonoBehaviour
         {
             // Notifica o controlador para atualizar o ponto de respawn
             RespawnController.Instance.SetRespawn(this);
+            UIManager.Instance.ShowCheckpointPopup(transform);
         }
     }
 }

@@ -24,11 +24,23 @@ public class UIManager : MonoBehaviour
     #endregion
 
     [SerializeField] private List<GameObject> lives;
-
+    [SerializeField] private GameObject checkpointPopup;
+    [SerializeField] private GameObject finishedGamedPopup;
+    [SerializeField] private Canvas UICanvas;
 
     public void RemoveLife()
     {
         lives[0].GetComponent<PulseDestroyComponent>().PulseAndDestroy();
         lives.RemoveAt(0);
+    }
+
+    public void ShowCheckpointPopup(Transform checkpoint)
+    {
+        Instantiate(checkpointPopup, checkpoint.position, checkpoint.rotation);
+    }
+
+    public void ShowEndingPopup()
+    {
+        Instantiate(finishedGamedPopup, UICanvas.transform);
     }
 }

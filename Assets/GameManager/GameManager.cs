@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +30,12 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         characterHealth.SetLives(maxLives);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+
+    public void GoBackToMenu()
+    {
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
     public void IncreaseDeath()
@@ -40,6 +47,7 @@ public class GameManager : MonoBehaviour
     public void FinishGame()
     {
         Debug.Log("Você terminou a fase!");
+        UIManager.Instance.ShowEndingPopup();
     }
 
 }
