@@ -181,8 +181,8 @@ public class CharacterMovement : MonoBehaviour
 
     public void IncreaseAccel()
     {
-        //Bloqueia a função de correr se estiver fora do chão
-        if (!isGrounded) return;
+        //Bloqueia a função de correr se estiver fora do chão ou parado
+        if (!isGrounded || Direction == Vector2.zero.magnitude) return;
 
         if (acceleration < maxAcceleration)
         {
@@ -195,14 +195,11 @@ public class CharacterMovement : MonoBehaviour
         //Mantém o impulso da corrida durante o pulo
         if (!isGrounded) return;
 
-        if (acceleration > 1f)
-        {
-            Acceleration -= 0.01f;
-        }
-        else
-        {
-            Acceleration = 1f;
-        }
+        //Para a aceleração de o player não estiver movendo o direcional
+        if (Direction == Vector2.zero.magnitude) { Acceleration = 1; }
+
+        if (acceleration > 1f) { Acceleration -= 0.01f; }
+        else { Acceleration = 1f; }
     }
 
 

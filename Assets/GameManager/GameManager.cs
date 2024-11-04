@@ -3,6 +3,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] CharacterHealth characterHealth;
+
+    #region Singleton
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    #endregion
 
     public int maxLives = 3;
     private int deaths = 0;
@@ -31,6 +34,7 @@ public class GameManager : MonoBehaviour
     public void IncreaseDeath()
     {
         deaths++;
+        UIManager.Instance.RemoveLife();
     }
 
     public void FinishGame()
