@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] CharacterHealth characterHealth;
+    //[SerializeField] CharacterHealth characterHealth;
 
     #region Singleton
     public static GameManager Instance { get; private set; }
@@ -29,13 +29,18 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        characterHealth.SetLives(maxLives);
+        //characterHealth.SetLives(maxLives);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
 
     public void GoBackToMenu()
     {
-        SceneManager.LoadScene(0, LoadSceneMode.Single);
+        ChangeScene(0);
+    }
+
+    public void ChangeScene(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex, LoadSceneMode.Single);
     }
 
     public void IncreaseDeath()
@@ -48,6 +53,11 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Você terminou a fase!");
         UIManager.Instance.ShowEndingPopup();
+    }
+
+    public void CalculateScore()
+    {
+
     }
 
 }

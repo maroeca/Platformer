@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,15 +10,12 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        // Se não houver uma instância ainda, define esta como a instância e a persiste entre cenas
         if (Instance == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Mantém o GameManager ao carregar novas cenas
+            Instance = this;            
         }
         else
         {
-            // Caso já exista uma instância, destrói o novo objeto para garantir o Singleton
             Destroy(gameObject);
         }
     }
@@ -27,7 +25,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject checkpointPopup;
     [SerializeField] private GameObject finishedGamedPopup;
     [SerializeField] private Canvas UICanvas;
+    [SerializeField] private GameObject menu;
+    [SerializeField] private Button menuButton;
 
+    private void Start()
+    {
+        menuButton.onClick.AddListener(OpenMenu);
+    }
     public void RemoveLife()
     {
         lives[0].GetComponent<PulseDestroyComponent>().PulseAndDestroy();
@@ -42,5 +46,10 @@ public class UIManager : MonoBehaviour
     public void ShowEndingPopup()
     {
         Instantiate(finishedGamedPopup, UICanvas.transform);
+    }
+
+    public void OpenMenu()
+    {
+        menu.GetComponent<UIEnterFromTop>().ShowUIFromTop();
     }
 }
