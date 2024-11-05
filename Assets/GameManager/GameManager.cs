@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     private float gameTime;
     private bool isCounting;
 
-    public int maxLives = 3;
     private int deaths = 0;
 
     private int score;
@@ -62,6 +61,7 @@ public class GameManager : MonoBehaviour
         // Verifica se a cena carregada é a cena de Gameplay
         if (scene.name == "Gameplay")
         {
+            deaths = 0; //reinicia a contagem de mortes toda vez que iniciar a cena de gameplay
             StartTimer();
         }
     }
@@ -99,14 +99,14 @@ public class GameManager : MonoBehaviour
         if (isCounting)
         {
             gameTime += Time.deltaTime;
-            //Debug.Log(gameTime);
+
         }
     }
 
 
     public void RestartGame()
     {
-        //characterHealth.SetLives(maxLives);
+        
         AnalyticsManager.Instance.RestartGame();
         ChangeScene(SceneManager.GetActiveScene().buildIndex);
     }

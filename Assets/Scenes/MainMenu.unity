@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62728b381f81f164db4a2c345c83cb46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameTime: 0
   maxLives: 3
 --- !u!4 &164358773
 Transform:

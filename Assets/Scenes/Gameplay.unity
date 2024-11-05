@@ -10636,7 +10636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62728b381f81f164db4a2c345c83cb46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLives: 3
 --- !u!4 &1014092611 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2790176010593612003, guid: dc4f27f6a72440c4e9d1fbdf41d25f72, type: 3}
@@ -11435,6 +11434,7 @@ GameObject:
   - component: {fileID: 1392377230}
   - component: {fileID: 1392377232}
   - component: {fileID: 1392377231}
+  - component: {fileID: 1392377233}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -11512,6 +11512,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1392377233
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392377229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1418457464
 GameObject:
   m_ObjectHideFlags: 0
@@ -11630,6 +11647,7 @@ GameObject:
   - component: {fileID: 1526502656}
   - component: {fileID: 1526502655}
   - component: {fileID: 1526502657}
+  - component: {fileID: 1526502658}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -11708,6 +11726,18 @@ MonoBehaviour:
   m_Damping: 0.5
   m_MaxWindowSize: -1
   m_Padding: 0
+--- !u!114 &1526502658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526502654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79bb3770175f17442b8c44d6cb307dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1618184354
 GameObject:
   m_ObjectHideFlags: 0
@@ -14462,17 +14492,17 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 295692457}
+  - {fileID: 1618184356}
   - {fileID: 619394802}
   - {fileID: 665360630}
-  - {fileID: 1618184356}
   - {fileID: 519420032}
+  - {fileID: 1526502656}
   - {fileID: 2051980129}
   - {fileID: 9090001086514332505}
   - {fileID: 870543002}
   - {fileID: 1181807327}
   - {fileID: 9036465}
   - {fileID: 1525128291}
-  - {fileID: 1526502656}
   - {fileID: 1418457465}
   - {fileID: 1102206295157916646}
   - {fileID: 1123552582}

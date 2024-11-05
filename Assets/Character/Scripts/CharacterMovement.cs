@@ -154,6 +154,8 @@ public class CharacterMovement : MonoBehaviour
         {
             isGrounded = true;
             isJumping = false;
+            Debug.Log("##### Touch ground #####");
+            ScreenShake.Instance.ShakeCamera();
         }
     }
 
