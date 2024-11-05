@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         //characterHealth.SetLives(maxLives);
-        
+        AnalyticsManager.Instance.RestartGame();
         ChangeScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -135,6 +135,7 @@ public class GameManager : MonoBehaviour
         StopTimer();
         CalculateScore();
         UIManager.Instance.ShowEndingPopup();
+        AnalyticsManager.Instance.FinishtGame();
     }
 
     
@@ -165,6 +166,12 @@ public class GameManager : MonoBehaviour
         }
 
         StarRating = stars;
+    }
+
+    public void GameOver()
+    {
+        UIManager.Instance.GameOver();
+        AnalyticsManager.Instance.GameOver();
     }
 
 }

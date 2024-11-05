@@ -12,6 +12,7 @@ public class CharacterHealth : MonoBehaviour
     [SerializeField] private Transform respawnPosition;
 
     private Rigidbody2D rb;
+    private bool isDead = false;
 
     private void Awake()
     {
@@ -29,7 +30,7 @@ public class CharacterHealth : MonoBehaviour
     private void CheckFall()
     {
         // Lança um Raycast para baixo para checar se encontra a deadzone abaixo do personagem
-        if (IsGroundBelow())
+        if (IsGroundBelow() && !isDead)
         {
             HandleDeath();
         }
@@ -46,7 +47,7 @@ public class CharacterHealth : MonoBehaviour
     {
         GameManager.Instance.IncreaseDeath();
         currentLives--;
-
+        isDead = true;
         if (currentLives > 0)
         {
             Respawn();
@@ -55,7 +56,7 @@ public class CharacterHealth : MonoBehaviour
         {
             // Trigger game over ou lógica de reset
             Debug.Log("Game Over");
-            Respawn(); // sempre respawn para teste
+            GameManager.Instance.GameOver();
         }
     }
 
@@ -65,6 +66,7 @@ public class CharacterHealth : MonoBehaviour
 
         // Coloque o personagem de volta na posição inicial ou no último checkpoint
         transform.position = respawnPosition.position;
+        isDead = false;
     }
 
     public void SetLives(int amount)
