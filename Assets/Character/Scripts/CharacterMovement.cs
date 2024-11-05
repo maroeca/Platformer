@@ -18,11 +18,7 @@ public class CharacterMovement : MonoBehaviour
 
     private float jumpHoldTime;
     private bool isJumping;
-    [SerializeField]private bool canJump = true;
-    public bool CanJump
-    {
-        get { return canJump; }
-    }
+    
 
     [Header("Coyote Time Settings")]
     [SerializeField] private float coyoteTimeDuration = 0.5f; // Duração do coyote time

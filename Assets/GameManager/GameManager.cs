@@ -107,7 +107,8 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         //characterHealth.SetLives(maxLives);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+        
+        ChangeScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GoBackToMenu()
@@ -117,7 +118,8 @@ public class GameManager : MonoBehaviour
 
     public void ChangeScene(int sceneIndex)
     {
-        SceneManager.LoadScene(sceneIndex, LoadSceneMode.Single);
+        //SceneManager.LoadScene(sceneIndex, LoadSceneMode.Single);
+        FindObjectOfType<SceneTransition>().StartTransition(sceneIndex);
     }
 
     public void IncreaseDeath()

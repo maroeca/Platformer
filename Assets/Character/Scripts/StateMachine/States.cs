@@ -127,6 +127,10 @@ public class JumpingState : PlayerState
         {
             characterBehaviour.ChangeState(new FallingState(characterBehaviour));
         }
+        if (characterBehaviour.IsGrounded() && characterBehaviour.GetVerticalVelocity() <= 0)
+        {
+            characterBehaviour.ChangeState(new IdleState(characterBehaviour));
+        }
     }
 }
 
@@ -149,7 +153,7 @@ public class FallingState : PlayerState
             characterBehaviour.Flip(direction);
         }
         // Transição para Idle ou Running se o personagem estiver no chão
-        if (characterBehaviour.IsGrounded() && characterBehaviour.GetVerticalVelocity() <= 0)
+        if (characterBehaviour.IsGrounded())
         {
             characterBehaviour.ChangeState(new IdleState(characterBehaviour));
         }
