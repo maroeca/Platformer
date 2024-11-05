@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas UICanvas;
     [SerializeField] private GameObject menu;
     [SerializeField] private Button menuButton;
+    [SerializeField] private GameObject gameOver;
 
     private void Start()
     {
@@ -34,6 +35,10 @@ public class UIManager : MonoBehaviour
     }
     public void RemoveLife()
     {
+        if (lives.Count <= 0)
+        {
+            return;
+        }
         lives[0].GetComponent<PulseDestroyComponent>().PulseAndDestroy();
         lives.RemoveAt(0);
     }
@@ -51,5 +56,12 @@ public class UIManager : MonoBehaviour
     public void OpenMenu()
     {
         menu.GetComponent<UIEnterFromTop>().ShowUIFromTop();
+    }
+
+    [ContextMenu("Test game over")]
+    public void GameOver()
+    {
+        var gameOverInstance = Instantiate(gameOver, UICanvas.transform);
+        gameOverInstance.GetComponent<UIEnterFromTop>().ShowUIFromTop();
     }
 }

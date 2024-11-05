@@ -9,4 +9,9 @@ public class MenuController : MonoBehaviour
     {
         GameManager.Instance.RestartGame();
     }
+
+    public void BackToMenu()
+    {
+        GameManager.Instance.GoBackToMenu();
+    }
 }
